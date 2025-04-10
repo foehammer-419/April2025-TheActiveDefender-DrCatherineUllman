@@ -151,4 +151,57 @@ More threat hunting as an active defender:
 - When working w/ offsec teams make sure to have proper scope of the users/apps/environment you want to test along with proper rules of engagement.  Scope is one of those things that can be too broad or to narrow so as to be useless, but there can be a number of factors/considerations including SLAs, vendors, fines, budget, cloud vs on prom, etc...
 - When working w/ offsec teams you can test a number of things from verifying existing defenses, to seeing if offsec teams can access critically importantdata/revenue streams.
 - When selecting an external or vendor offsec team there can be a number of thingsto consider from cost, to reputation, complance, experience/expertise, controls/data security/NDAs, and how results will be communicated.
-- 
+- Purple teams are a combination of offensive and defensive security professionals working together to achieve one or more goals usually led by a coordinator/single point of contact.
+- Purple team engagements usually involve 4 steps: Cyber threat intel, prep, execution, and lessons learned, usually the engagement will assume the org has been breached so the team can focus on detection/response
+      - CTI: identifying an adversary that has the opportunity, intent, and capability to attack an org with focus on the TTPs and adversary normally uses and any associated tooling/artifacts the adversary might utilize
+      - Prep: usually involves meetings, setting up goals/objectives, requirements/action items, techical/logistical prep, etc...
+      - Execution: The offensive team will carry out the engagement with discussions/tabletops around what should alert/not alert, timeframe, metrics, what should be lgged, etc...
+      - Lessons learned: Notes, documentation, and feedback should be gathered to share with all parties involved and reviewed to go over information before it is forgotten.
+
+- Advanced active defenders can help align org goals, test defenses, rcognize gaps, and effecively deploy deceptive technologies
+
+### Ch 7: Building effective detections
+
+- Building effective detections is difficult at best and can be evaded by efficent attackers/security professionals
+- 100% prventions is not a realistic goal so we rely on various forms of detection in addition to prevention mechanisms
+- The Funnel of Fidelity model has 5 stages to help determine which events to prioritize investigating and which ones to ignore: collection, detection, triage, investigation, remediation.  Most orgs perform these steps in one form or another but being explict about it can increase desired outcomes
+      - Collection: Gathering telemetry/data provided by monitoring tools such as logs.  Without the righ info, you can't get the right detections in place
+      - Detection: Identify which events are security relevant to hopefully reduce the amount of triage time
+      - Triage: Where security experts work to break alerts into categories (known malicious, known good, unknown for example) unknown events need additional investigation.  Often alert fatigue occurs at this stage, active dfenders atthis stage have a better understanding of the nature of attacks and what to look out for
+      - Investigation: Ivestigations add additonal context to ID fi events in question are malicious
+      - Remediation: If an incident is declared, remediation will be required to remove the malicious activity from the network
+
+  - For effective rules we should consider identification and classification.  Identifying all events that should be subject to a particular detection rule and classifying looks at each instance of a behavior and considers if it should be an alert given the context.
+  - Be sure to properly identify events in the identification phase and avoid conflating identification and classification
+  - Having the right telemetry available is critical for useful identification/classification
+  - For effective classification try and utilize more than a single feature, and understand the context the event is in
+  - Some challenges for detection include attention with finite resources, perception of what telmetry is available and verifying the log, abstracting away how the detection rule works/functions (what level of analysis is needed/what conditions are needed to build the right detection), and how to validate that the correct events were detected/captured.
+
+
+![image](https://github.com/user-attachments/assets/cd6693e7-0463-43da-8fe0-10ac93ac17f5)
+
+- Lower levels of this pyramid can be easily swapped out/replaced/lost by adversaries without majorly hindering their operations, however losing tools such as those that create/establish C2/connections/etc... can be more costly, but it can be difficult to create detections for specific tools because attackers will use more than one tool or set of tools to accomplish their goal and may set up a given tool to bypass detection
+- TTPs represent a higher level of the pyramid, as such Tactics represent the overall goal of the adversary (ex: cred access), techniques represent the overall goal of a given procedure (cred dumping), and procedures are how a technique was carried out (what commands were used to perform cred dumping)
+- Testing detections is key at the functional level as in what the ultimate outcome is regardless of tool(s) used, so for instance SharpDump and OUt-Minidump use the same processes to achieve the outcome of credential dumping so watching that set of processes can be useful in detections
+- We can also look at the outcome level to determine what functions are used for what operation or sequence of operations, and testing might have to consider multiple variations/combinations of functions and how they are being used (i.e. procedural synonyms)
+- There is also a technical level of analysis, for tools that contain different operations/differnt procedures but that have the same outcome are technical synonyms
+- Proper valdiation and testing requires validating that telemetry coverage is complete and valid with few/no gaps that would allow for  bypasses including for functional variations of processes.  And while we may not be able to 100% verify detection coverage across all variations we can create a comprehensive set of coverages that detect enough variations to be representative of the whole
+- Atomic Red Team and AtomicTestHarness allow for telmetry testing and different functional variations
+
+### Ch 8: Actively Defending Cloud Computing Environments
+
+- The cloud often comes in 3 different models Iaas (customer control over OS, storage, and deployed apps, but does not manage underlying infra), PaaS Customer deploys apps and some configuration settings, SaaS allows customer to use existing applications (e.g. web based email) with the provider controlling almost everything
+- These models are comingled and can overlap and often a more useful distincation is public vs private cloud infrastructure but the biggest advantage of the cloud is its flexibility and service availability
+- Who is responsible for what is a key consideration when using various cloud services/models
+- Control plane: used to manage resources (storage, DB, VMs, etc...) data plane: used to interact w/ the instance of a particular resource
+- You need to have a holistic view of both the control plane and the data plane, especially since the control plane manages the data plane
+- Network boundaries are less clear in the cloud as everything is hyperconnected and can have multiple ingress/egress points
+- Identity is the new VLAN as identity is often used to direct network traffic
+- Since the cloud cannot rely entirely on network boundaries, IAM becomes more critical AuthN: WHO you are, AuthZ: WHAT you have access to
+- RBAC: Role based acces control based on a persons job functions, ABAC: attributes based on resources/user/environmental access
+- One of the issues w/ cloud security is a larger attack surface where it can be easy to misconfigure something, new types of exposed services create new risks as well
+- Because everything is created/managed through APIs in the control plane anything that interacts with those APIs needs to be watched more closely
+- Watch out for ghost resources, basically resources that get created but never released/deprovisioned as they can become an attack vector later on or a cost sink
+- Use trusted images/base templates for proper configuration and enforce proper configuration update procedures to avoid config drift
+- Don't overcredential/overpermissoin a resource/identity
+- Watch out for custom apps that may not be properly secured
