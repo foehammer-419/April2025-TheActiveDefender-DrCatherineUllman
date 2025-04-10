@@ -205,3 +205,26 @@ More threat hunting as an active defender:
 - Use trusted images/base templates for proper configuration and enforce proper configuration update procedures to avoid config drift
 - Don't overcredential/overpermissoin a resource/identity
 - Watch out for custom apps that may not be properly secured
+- Cloud offensive security engagements go through the same cycle as on prem engagements, just with different ingress/egress points, so the OSINT may be the same but there are different tools such as cloud enum or IAM tools, or cred/key scanners on code repos
+- Another attack vector for cloud deployments is package managers or plugins scraping/saving data
+- Misconfigured storage/blogs can create another route for initial access along w/ traditional phishing and password spraying SQL injection, XSS, SSRF, etc...
+- After gaining access to an environment there will usually ba  number of questions to answer such as what roles can be accessed, how can we escalate priv, what resources can be accessed, etc...
+- Usually post exploit enumeration includes using tools such as ROADtools, AzureHound, Cloud enum among others to gather roles, policies, permissions, resources, implied trust between zones, etc...
+- Each of the cloud vendors has different ways of managing roles, but one of the big things to watch out for is service accounts and implied trust for accessing resources/data along with configs that are overly permissive
+- Persistence/expansion in cloud environments looks like creating backup accounts, generating access tokens, updating libraries for additional access
+- Kepp keys/tokens in a key vault with limited access, and don't put them in plaintext in the code.
+- For defenders, don't assume something is working the way it is supposed to, verify it and be aware of how IAM roles/policies/permissions are functioning, because everything can be managed via an API in cloud environments watch the API keys and API access
+
+
+### Ch 9: Future Challenges
+
+- Software supply chain attacks will continue to be a problem infecting various software packages, libraries, and legitimate software.
+- Fake hardware is also a challenge from fake Cisco gear to fake chips
+- UEFI is also an ongoing area of vulnerability with the BlackLotus bootkit that is able to bypass protections and MS has been slow to respond.  The best way to defend against this is knowning the attack vectors and staying on top of the information
+- BYOVD/Bring Your Own Vulnerable Driver attacks utilize drivers to get kernel level access to the system and bypass Windows protection methods in order to disable AV/EDR or other protections
+- Ransomware is continuing to evolve so having good playbooks/predefined responses, communication channels, and backups is key for this to include tabletop business/technical exercises to understand how data might flow or figure out where bottlenecks might occur and who key decision makers are
+- To fully respond to ransomware you need to understand the ransomware context/TTPs and engage in containment/scope, eradication, communication, and recovery
+- Frameworks are being leveraged by threat actors to lower the barrier to entry and make malicious hacking more accessible, this includes Cobalt Strike, Silver (an alternative C2 framework), Metasploit, Brute Ratel (post exploitation framework), Havoc (post exploitation/C2 framework), Mythic (post exploitation/C2 framework).
+- The best way to defend frameworks is to understand their capabilities and limitations they will often have good documentation and other security researchers have done writeups on a number of the frameworks
+- Since APIs are integral to modern software and functionality actively defend them similar to how you would defend a web application by determining what the API can access, what it should respond with, API rate capacity, and that the API is secured/mitigate against the AWASP API Top 10 at the very least
+- Many "new" attacks are rehashes/similar patterns to old ones, hence why the OWASP Top 10 is so valuable, why old malware/ransomware/botnets are still around (often w/ updates/configuration changes/different attack methods or rebranding entirely see Emotet or REvil)
